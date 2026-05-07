@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pablo Alessandrini Flores | Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            /* Paleta Formal (Elegancia Clásica) */
+            --bg-color: #0d0d0d;
+            --surface: #181818;
+            --surface-hover: #222222;
+            --text-primary: #e8e8e8;
+            --text-secondary: #9a9a9a;
+            --accent-formal: #C5A059; /* Bronce/Dorado mate */
+            --border-color: #333333;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Lato', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        /* Tipografía y Textos Formales */
+        h1, h2, h3, .logo {
+            font-family: 'Playfair Display', serif;
+            font-weight: 400;
+        }
+        
+        h2 { 
+            font-size: 2.5rem; 
+            margin-bottom: 3rem; 
+            color: var(--text-primary); 
+            text-align: center;
+            position: relative; 
+            padding-bottom: 15px; 
+        }
+        
+        h2::after {
+            content: ''; position: absolute; bottom: 0; left: 50%;
+            transform: translateX(-50%);
+            width: 60px; height: 1px; background-color: var(--accent-formal);
+        }
+        
+        .highlight { color: var(--accent-formal); font-style: italic; }
+
+        /* Navbar Formal */
+        nav {
+            position: fixed; width: 100%; padding: 25px 50px;
+            display: flex; justify-content: space-between; align-items: center;
+            background: rgba(13, 13, 13, 0.98); border-bottom: 1px solid var(--border-color);
+            z-index: 1000;
+        }
+        nav .logo { font-size: 1.5rem; letter-spacing: 2px; color: var(--text-primary); }
+        nav ul { display: flex; list-style: none; gap: 40px; }
+        nav ul li a {
+            color: var(--text-secondary); text-decoration: none; font-size: 0.85rem;
+            text-transform: uppercase; letter-spacing: 1.5px; transition: color 0.3s ease;
+            position: relative;
+        }
+        nav ul li a::after {
+            content: ''; position: absolute; width: 0; height: 1px;
+            bottom: -5px; left: 0; background-color: var(--accent-formal);
+            transition: width 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+        nav ul li a:hover { color: var(--text-primary); }
+        nav ul li a:hover::after { width: 100%; }
+
+        /* Secciones Generales */
+        section { padding: 120px 10%; min-height: 100vh; display: flex; flex-direction: column; justify-content: center; }
+        .reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1), transform 0.8s cubic-bezier(0.25, 1, 0.5, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        /* Home / Hero Section */
+        #home { align-items: flex-start; }
+        #home h1 { font-size: clamp(2.5rem, 6vw, 4.5rem); line-height: 1.1; margin-bottom: 20px; }
+        #home p { font-size: 1.1rem; color: var(--text-secondary); max-width: 600px; margin-bottom: 40px; }
+        
+        /* Botones Formales */
+        .btn {
+            display: inline-block; padding: 15px 40px; background: transparent;
+            color: var(--text-primary); border: 1px solid var(--accent-formal);
+            text-decoration: none; font-size: 0.9rem; letter-spacing: 1px;
+            text-transform: uppercase; position: relative; overflow: hidden;
+            transition: color 0.4s ease; cursor: pointer;
+        }
+        .btn::before {
+            content: ''; position: absolute; top: 0; left: 0;
+            width: 100%; height: 100%; background: var(--accent-formal);
+            transform: translateX(-101%); transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1); z-index: -1;
+        }
+        .btn:hover { color: var(--bg-color); font-weight: 700; }
+        .btn:hover::before { transform: translateX(0); }
+
+        /* Sobre Mí */
+        #sobre-mi .content { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: center; }
+        #sobre-mi p { color: var(--text-secondary); }
+        #sobre-mi h3 { margin-bottom: 20px; font-size: 1.5rem; font-family: 'Playfair Display', serif; font-weight: normal; color: var(--text-primary); }
+        .skills-container { display: flex; flex-wrap: wrap; gap: 15px; }
+        .skill-tag {
+            padding: 10px 20px; background: transparent; border: 1px solid var(--border-color);
+            font-size: 0.85rem; color: var(--text-secondary); text-transform: uppercase;
+            letter-spacing: 1px; transition: all 0.3s ease; border-radius: 0;
+        }
+        .skill-tag:hover { border-color: var(--accent-formal); color: var(--accent-formal); background: var(--surface); }
+
+        /* Experiencia y Proyectos */
+        .timeline { position: relative; max-width: 800px; margin: 0 auto; }
+        .timeline::before {
+            content: ''; position: absolute; width: 1px; background: var(--border-color); top: 0; bottom: 0; left: 20px;
+        }
+        .timeline-item { position: relative; padding-left: 60px; margin-bottom: 50px; }
+        .timeline-item::before {
+            content: ''; position: absolute; width: 11px; height: 11px; background: var(--accent-formal);
+            left: 15px; top: 5px; /* Estilo formal y estructurado */
+        }
+        .timeline-content {
+            background: var(--surface); padding: 30px; border: 1px solid var(--border-color);
+            transition: background-color 0.3s ease;
+        }
+        .timeline-content:hover { background-color: var(--surface-hover); }
+        .timeline-content h3 { font-size: 1.4rem; margin-bottom: 10px; }
+        .timeline-content p { color: var(--text-secondary); font-size: 0.95rem; }
+        .timeline-date { color: var(--accent-formal); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px; display: block; font-weight: 700; }
+
+        /* Certificaciones (Grid Formal de 9 elementos) */
+        .cert-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1px; background-color: var(--border-color); border: 1px solid var(--border-color);
+        }
+        .cert-card {
+            background-color: var(--surface); padding: 40px 30px; text-align: center;
+            position: relative; cursor: pointer; overflow: hidden; transition: background-color 0.4s ease;
+        }
+        .cert-card:hover { background-color: var(--surface-hover); }
+        
+        .cert-card .hover-panel {
+            position: absolute; bottom: 0; left: 0; width: 100%; height: 5px;
+            background-color: var(--accent-formal); transition: height 0.4s cubic-bezier(0.19, 1, 0.22, 1); z-index: 1;
+        }
+        .cert-card:hover .hover-panel { height: 100%; }
+        
+        .cert-card i, .cert-card h3, .cert-card p { position: relative; z-index: 2; transition: color 0.3s; }
+        .cert-card i { font-size: 2.5rem; color: var(--accent-formal); margin-bottom: 15px; }
+        .cert-card h3 { font-size: 1.2rem; margin-bottom: 10px; font-family: 'Playfair Display', serif; }
+        .cert-card p { font-size: 0.80rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; }
+        
+        .cert-card:hover h3, .cert-card:hover p, .cert-card:hover i { color: var(--bg-color); }
+
+        /* Contacto */
+        #contacto { text-align: center; }
+        #contacto p { color: var(--text-secondary); font-size: 1.1rem; }
+        .social-links { display: flex; justify-content: center; gap: 30px; margin-top: 30px; }
+        .social-links a { color: var(--text-secondary); font-size: 2rem; transition: all 0.3s ease; }
+        .social-links a:hover { color: var(--accent-formal); transform: translateY(-5px); }
+
+        /* MODAL ESTRUCTURADO PARA PDF */
+        .modal {
+            display: none; position: fixed; z-index: 2000;
+            left: 0; top: 0; width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.85); backdrop-filter: blur(8px);
+            opacity: 0; transition: opacity 0.4s ease;
+        }
+        .modal.show { opacity: 1; }
+        
+        .modal-content {
+            position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%, -45%);
+            width: 80%; height: 85%;
+            background-color: var(--surface);
+            border: 1px solid var(--border-color);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+        .modal.show .modal-content { transform: translate(-50%, -50%); }
+
+        .modal-header {
+            padding: 15px 20px; border-bottom: 1px solid var(--border-color);
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .close-btn {
+            color: var(--text-secondary); font-size: 1.5rem; cursor: pointer;
+            transition: color 0.3s; background: none; border: none; outline: none;
+        }
+        .close-btn:hover { color: var(--accent-formal); }
+        
+        iframe { width: 100%; height: calc(100% - 60px); border: none; background: #fff;}
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            #sobre-mi .content { grid-template-columns: 1fr; }
+            nav ul { display: none; }
+            #home h1 { font-size: 2.8rem; }
+            .modal-content { width: 95%; height: 90%; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo">PAF.</div>
+        <ul>
+            <li><a href="#home">Inicio</a></li>
+            <li><a href="#sobre-mi">Sobre Mí</a></li>
+            <li><a href="#experiencia">Experiencia</a></li>
+            <li><a href="#certificaciones">Certificaciones</a></li>
+            <li><a href="#contacto">Contacto</a></li>
+        </ul>
+    </nav>
+
+    <section id="home" class="reveal">
+        <h1>Hola, soy <br><span class="highlight">Pablo Alessandrini Flores</span></h1>
+        <p>Estudiante de Ingeniería en Sistemas de Información (UTN) apasionado por el Big Data, la Inteligencia Artificial y la automatización de procesos para la mejora organizacional.</p>
+        <div>
+            <a href="#contacto" class="btn">Contáctame</a>
+            <a href="CV_Pablo_Alessandrini_Flores-1.pdf" target="_blank" class="btn" style="margin-left: 10px; border-color: var(--border-color); color: var(--text-secondary);">Descargar CV</a>
+        </div>
+    </section>
+
+    <section id="sobre-mi" class="reveal">
+        <h2>Sobre <span class="highlight">Mí</span></h2>
+        <div class="content">
+            <div>
+                <p>Ubicado en La Plata, Buenos Aires. Soy estudiante de segundo año en la UTN, con una sólida formación académica y participación activa en proyectos de investigación. Mi enfoque está en transformar datos crudos en soluciones inteligentes.</p>
+                <br>
+                <p>Poseo experiencia práctica desarrollando herramientas administrativas y aplicando modelos de análisis de datos para optimizar recursos y tiempos.</p>
+            </div>
+            <div>
+                <h3>Tecnologías & Habilidades</h3>
+                <div class="skills-container">
+                    <div class="skill-tag">Python (Pandas, Matplotlib)</div>
+                    <div class="skill-tag">Big Data</div>
+                    <div class="skill-tag">AppSheet</div>
+                    <div class="skill-tag">Google Sheets / Excel</div>
+                    <div class="skill-tag">HTML5 & CSS3</div>
+                    <div class="skill-tag">JavaScript</div>
+                    <div class="skill-tag">Bootstrap</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="experiencia" class="reveal">
+        <h2>Experiencia & <span class="highlight">Proyectos</span></h2>
+        <div class="timeline">
+            <div class="timeline-item">
+                <span class="timeline-date">2025 - Actualidad | UTN</span>
+                <div class="timeline-content">
+                    <h3>Proyecto de Investigación en Big Data</h3>
+                    <p>Participación en investigación universitaria sobre aplicaciones de datos en sistemas inteligentes. Tareas vinculadas a la recopilación, análisis y visualización avanzada de datos.</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <span class="timeline-date">2021 - 2022 | Proyectos Personales</span>
+                <div class="timeline-content">
+                    <h3>Desarrollador de Soluciones Administrativas</h3>
+                    <p>Implementación de un sistema integral de inventario y gestión de remitos para una cafetería utilizando AppSheet y Google Sheets. Automatización de cálculos, filtros y reportes en tiempo real.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="certificaciones" class="reveal">
+        <h2>Mis <span class="highlight">Certificaciones</span></h2>
+        
+        <div class="cert-grid">
+            
+            <div class="cert-card" onclick="openModal('Certificado ECA Capacitaciones - Analisis de Datos.pdf')">
+                <div class="hover-panel"></div>
+                <i class="fa-brands fa-python"></i>
+                <h3>Análisis de Datos con Python</h3>
+                <p>ECA Capacitaciones (2025)</p>
+            </div>
+            
+            <div class="cert-card" onclick="openModal('Certificado ECA Capacitaciones - Python Basico-Intermedio.pdf')">
+                <div class="hover-panel"></div>
+                <i class="fa-brands fa-python"></i>
+                <h3>Python Básico-Intermedio</h3>
+                <p>ECA Capacitaciones (2025)</p>
+            </div>
+
+            <div class="cert-card" onclick="openModal('Certificado Inteligencia artificial - Pablo Alessandrini Flores.pdf')">
+                <div class="hover-panel"></div>
+                <i class="fa-solid fa-robot"></i>
+                <h3>IA Generativa Profesional</h3>
+                <p>Accenture & Microsoft (2025)</p>
+            </div>
+
+            <div class="cert-card" onclick="openModal('Certificado Fundamentos profesionales en IA generativa - Pablo Alessandrini Flores.pdf')">
+                <div class="hover-panel"></div>
+                <i class="fa-solid fa-brain"></i>
+                <h3>Fundamentos en IA Generativa</h3>
+                <p>Microsoft & JA (2025)</p>
+            </div>
+
+            <div class="cert-card" onclick="openModal('Certificado Yo puedo programar - Pablo Alessandrini Flores.pdf')">
+                <div class="hover-panel"></div>
+                <i class="fa-solid fa-code"></i>
+                <h3>Yo Puedo Programar</h3>
+                <p>Junior Achievement (2024)</p>
+            </div>
+
+            <div class="cert-card" onclick="openModal('Certificado Jornada.pdf')">
+                <div class="hover-panel"></div>
+                <i class="fa-solid fa-university"></i>
+                <h3>Jornadas de Formación</h3>
+                <p>UTN La Plata (2025)</p>
+            </div>
+
+            <div class="cert-card" onclick="openModal('Certificado Finanzas personales - Pablo Alessandrini Flores Alessandrini Flores.pdf')">
+                <div class="hover-panel"></div>
+                <i class="fa-solid fa-chart-line"></i>
+                <h3>Finanzas Personales</h3>
+                <p>JA & Deloitte (2024)</p>
+            </div>
+
+            <div class="cert-card" onclick="openModal('Certificado Economía personal - Pablo Alessandrini Flores.pdf')">
+                <div class="hover-panel"></div>
+                <i class="fa-solid fa-coins"></i>
+                <h3>Economía Personal</h3>
+                <p>Junior Achievement (2024)</p>
+            </div>
+
+            <div class="cert-card" onclick="openModal('Certificado Cuentas contigo - Pablo Alessandrini Flores.pdf')">
+                <div class="hover-panel"></div>
+                <i class="fa-solid fa-file-invoice-dollar"></i>
+                <h3>Cuentas Contigo</h3>
+                <p>JA & Deloitte (2024)</p>
+            </div>
+            
+        </div>
+    </section>
+
+    <section id="contacto" class="reveal">
+        <h2>Ponte en <span class="highlight">Contacto</span></h2>
+        <p>¿Interesado en colaborar en proyectos de análisis de datos o desarrollo? Hablemos.</p>
+        <div class="social-links">
+            <a href="mailto:pabloalessaf@gmail.com" target="_blank" title="Email"><i class="fa-solid fa-envelope"></i></a>
+            <a href="https://www.linkedin.com/in/pablo-alessandrini-flores-2a7a01365" target="_blank" title="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
+        </div>
+    </section>
+
+    <div id="documentModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span style="font-family: 'Playfair Display'; font-style: italic; color: var(--accent-formal);">Visor de Documentos</span>
+                <button class="close-btn" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <iframe id="pdfViewer" src=""></iframe>
+        </div>
+    </div>
+
+    <script>
+        // Animación de "Reveal" al hacer scroll
+        function reveal() {
+            var reveals = document.querySelectorAll(".reveal");
+            for (var i = 0; i < reveals.length; i++) {
+                var windowHeight = window.innerHeight;
+                var elementTop = reveals[i].getBoundingClientRect().top;
+                var elementVisible = 100;
+                if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add("active");
+                }
+            }
+        }
+        window.addEventListener("scroll", reveal);
+        reveal(); // Ejecutar al inicio para mostrar el Hero
+
+        // Lógica del Modal Formal para PDFs
+        const modal = document.getElementById('documentModal');
+        const viewer = document.getElementById('pdfViewer');
+
+        function openModal(pdfFile) {
+            viewer.src = pdfFile;
+            modal.style.display = 'block';
+            setTimeout(() => {
+                modal.classList.add('show');
+            }, 10);
+            document.body.style.overflow = 'hidden'; // Bloquea el scroll de fondo
+        }
+
+        function closeModal() {
+            modal.classList.remove('show');
+            setTimeout(() => {
+                modal.style.display = 'none';
+                viewer.src = '';
+                document.body.style.overflow = 'auto'; // Restaura el scroll
+            }, 400);
+        }
+
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
+    </script>
+</body>
+</html>
